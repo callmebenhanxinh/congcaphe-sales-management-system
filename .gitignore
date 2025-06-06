@@ -1,0 +1,17 @@
+# Ignore build and dist except dist/lib
+build/
+dist/
+!dist/lib/
+
+# Ignore NetBeans private settings
+nbproject/private/
+
+# Ignore OS and editor junk
+.DS_Store
+Thumbs.db
+*.bak
+*~
+*.log
+
+# Ignore compiled classes (if any outside build/)
+*.class

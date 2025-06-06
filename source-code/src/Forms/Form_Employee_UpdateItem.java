@@ -1,0 +1,467 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Forms;
+
+import Repositories.CustomerRepository;
+import Repositories.EmployeeRepository;
+import Repositories.PositionRepository;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author ThanhNhan
+ */
+public class Form_Employee_UpdateItem extends javax.swing.JDialog {
+    public interface DataChangedListener {
+        void onDataChanged();
+    }
+    
+    private EmployeeRepository employeeRepo = new EmployeeRepository();
+    private DataChangedListener dataChangedListener;
+    private Map<String, String> positionMap;
+    private PositionRepository positionRepo = new PositionRepository();
+    
+    public void setDataChangedListener(DataChangedListener listener) {
+        this.dataChangedListener = listener;
+    }
+    public void setEmployeeID(String id) {
+        txtEmployeeID.setText(id);
+        txtEmployeeID.setEditable(false); 
+    }
+
+    public void setEmployeeName(String name) {
+        txtEmployeeName.setText(name);
+    }
+
+    public void setEmployeeGender(String gender) {
+        if (gender.equals("Nam")) {
+            rdbGender_Male.setSelected(true);
+        } else if (gender.equals("Nữ")) {
+            rdbGender_Female.setSelected(true);
+        }
+    }
+
+    public void setEmployeeDOB(String dob) {
+        txtEmployeeDOB.setText(dob);
+    }
+
+    public void setEmployeeAddress(String address) {
+        txtEmployeeAddress.setText(address);
+    }
+
+    public void setEmployeePhone(String phone) {
+        txtEmployeePhone.setText(phone);
+    }
+    
+    public void setEmployeeDOW (String dow) {
+        txtEmployeeDOW.setText(dow);
+    }
+
+    public void setEmployeeUsername (String username) {
+        txtEmployeeUsername.setText(username);
+    }
+    
+    public void setEmployeePassword (String password) {
+        txtEmployeePassword.setText(password);
+    }
+    
+    public void setEmployeePositionID (String positionID) {
+        txtIDPosition.setText(positionID);
+        txtIDPosition.setEditable(false);
+        setSelectedPositionNameInComboBox(positionID);
+    }
+    
+    public void setEmployeePositionName (String positionName) {
+        cboPositionName.setSelectedItem(positionName);
+    }
+    
+    private java.sql.Date convertStringToDate(String dateString) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+            java.util.Date parsed = format.parse(dateString);
+            return new java.sql.Date(parsed.getTime());
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Định dạng ngày không hợp lệ. Vui lòng nhập theo yyyy-MM-dd.");
+            return null;
+        }
+    }
+    
+    private void loadPositionData() {
+        positionMap = positionRepo.getPositionNameIdMap();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+        for (String positionName : positionMap.keySet()) {
+            model.addElement(positionName);
+        }
+        cboPositionName.setModel(model);
+    }
+
+    private void setSelectedPositionNameInComboBox(String positionID) {
+        for (Map.Entry<String, String> entry : positionMap.entrySet()) {
+            if (entry.getValue().equals(positionID)) {
+                cboPositionName.setSelectedItem(entry.getKey());
+                return;
+            }
+        }
+        if (cboPositionName.getItemCount() > 0) {
+            cboPositionName.setSelectedIndex(0);
+        }
+    }
+    /**
+     * Creates new form Form_Employee_UpdateItem
+     */
+    public Form_Employee_UpdateItem(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
+        genderGroup.add(rdbGender_Male);
+        genderGroup.add(rdbGender_Female);
+        loadPositionData();
+        
+        cboPositionName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboPositionNameActionPerformed(evt);
+            }
+        });
+    }
+    
+    private void cboPositionNameActionPerformed(java.awt.event.ActionEvent evt) {
+        String selectedPositionName = (String) cboPositionName.getSelectedItem();
+
+        if (selectedPositionName != null && positionMap.containsKey(selectedPositionName)) {
+            String positionID = positionMap.get(selectedPositionName);
+
+            txtIDPosition.setText(positionID);
+        } else {
+            txtIDPosition.setText("");
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        genderGroup = new javax.swing.ButtonGroup();
+        txtEmployeeName = new javax.swing.JTextField();
+        txtEmployeePassword = new javax.swing.JTextField();
+        txtEmployeeDOB = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtIDPosition = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtEmployeeUsername = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtEmployeeDOW = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        rdbGender_Female = new javax.swing.JRadioButton();
+        rdbGender_Male = new javax.swing.JRadioButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        txtEmployeeID = new javax.swing.JTextField();
+        txtEmployeeAddress = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        cboPositionName = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        txtEmployeePhone = new javax.swing.JTextField();
+        btnUpdate = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cập nhật thông tin nhân viên");
+        setMinimumSize(new java.awt.Dimension(700, 920));
+        setPreferredSize(new java.awt.Dimension(700, 920));
+        getContentPane().setLayout(null);
+
+        txtEmployeeName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtEmployeeName);
+        txtEmployeeName.setBounds(40, 250, 235, 40);
+
+        txtEmployeePassword.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtEmployeePassword);
+        txtEmployeePassword.setBounds(420, 360, 235, 40);
+
+        txtEmployeeDOB.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtEmployeeDOB);
+        txtEmployeeDOB.setBounds(40, 460, 235, 40);
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel13.setText("Mã chức vụ:");
+        jLabel13.setAlignmentX(0.5F);
+        getContentPane().add(jLabel13);
+        jLabel13.setBounds(420, 420, 150, 40);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel11.setText("Ngày vào làm:");
+        jLabel11.setAlignmentX(0.5F);
+        getContentPane().add(jLabel11);
+        jLabel11.setBounds(420, 90, 150, 40);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel4.setText("Ngày sinh:");
+        jLabel4.setAlignmentX(0.5F);
+        getContentPane().add(jLabel4);
+        jLabel4.setBounds(40, 420, 150, 40);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel3.setText("Họ tên nhân viên:");
+        jLabel3.setAlignmentX(0.5F);
+        getContentPane().add(jLabel3);
+        jLabel3.setBounds(40, 210, 150, 40);
+
+        txtIDPosition.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtIDPosition);
+        txtIDPosition.setBounds(420, 460, 235, 40);
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel7.setText("Tên đăng nhập:");
+        jLabel7.setAlignmentX(0.5F);
+        getContentPane().add(jLabel7);
+        jLabel7.setBounds(420, 210, 150, 40);
+
+        txtEmployeeUsername.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtEmployeeUsername);
+        txtEmployeeUsername.setBounds(420, 250, 235, 40);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel2.setText("Mã nhân viên:");
+        jLabel2.setAlignmentX(0.5F);
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(40, 90, 150, 40);
+
+        txtEmployeeDOW.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtEmployeeDOW);
+        txtEmployeeDOW.setBounds(420, 130, 235, 40);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel10.setText("Mật khẩu:");
+        jLabel10.setAlignmentX(0.5F);
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(420, 320, 150, 40);
+
+        rdbGender_Female.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        rdbGender_Female.setText("Nữ");
+        rdbGender_Female.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbGender_FemaleActionPerformed(evt);
+            }
+        });
+        getContentPane().add(rdbGender_Female);
+        rdbGender_Female.setBounds(190, 360, 88, 40);
+
+        rdbGender_Male.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        rdbGender_Male.setText("Nam");
+        getContentPane().add(rdbGender_Male);
+        rdbGender_Male.setBounds(40, 360, 90, 40);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel9.setText("Giới tính:");
+        jLabel9.setAlignmentX(0.5F);
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(40, 320, 150, 40);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel1.setText("THÔNG TIN NHÂN VIÊN");
+        jLabel1.setAlignmentX(0.5F);
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(220, 40, 237, 40);
+
+        txtEmployeeID.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtEmployeeID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmployeeIDActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtEmployeeID);
+        txtEmployeeID.setBounds(40, 130, 235, 40);
+
+        txtEmployeeAddress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtEmployeeAddress);
+        txtEmployeeAddress.setBounds(40, 570, 235, 40);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel5.setText("Địa chỉ:");
+        jLabel5.setAlignmentX(0.5F);
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(40, 530, 150, 40);
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel12.setText("Tên chức vụ:");
+        jLabel12.setAlignmentX(0.5F);
+        getContentPane().add(jLabel12);
+        jLabel12.setBounds(420, 530, 150, 40);
+
+        getContentPane().add(cboPositionName);
+        cboPositionName.setBounds(420, 570, 235, 45);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel6.setText("Số điện thoại:");
+        jLabel6.setAlignmentX(0.5F);
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(40, 640, 150, 40);
+
+        txtEmployeePhone.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        getContentPane().add(txtEmployeePhone);
+        txtEmployeePhone.setBounds(40, 680, 235, 40);
+
+        btnUpdate.setBackground(new java.awt.Color(204, 255, 204));
+        btnUpdate.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnUpdate.setText("Cập nhật");
+        btnUpdate.setAlignmentX(0.5F);
+        btnUpdate.setBorderPainted(false);
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnUpdate);
+        btnUpdate.setBounds(150, 760, 125, 50);
+
+        btnBack.setBackground(new java.awt.Color(204, 255, 204));
+        btnBack.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        btnBack.setText("Quay lại");
+        btnBack.setAlignmentX(0.5F);
+        btnBack.setBorderPainted(false);
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnBack);
+        btnBack.setBounds(420, 760, 125, 50);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void rdbGender_FemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbGender_FemaleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdbGender_FemaleActionPerformed
+
+    private void txtEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmployeeIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmployeeIDActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        String employeeID = txtEmployeeID.getText().trim();
+        String employeeName = txtEmployeeName.getText().trim();
+        String employeeGender = rdbGender_Male.isSelected() ? "Nam" : "Nữ";
+        String dobString = txtEmployeeDOB.getText();
+        java.sql.Date dob = convertStringToDate(dobString);
+        String employeeAddress = txtEmployeeAddress.getText().trim();
+        String employeePhone = txtEmployeePhone.getText().trim();
+        String dowString = txtEmployeeDOW.getText();
+        java.sql.Date dow = convertStringToDate(dowString);
+        String employeeUsername = txtEmployeeUsername.getText().trim();
+        String employeePassword = txtEmployeePassword.getText().trim();
+        String selectedPositionName = (String) cboPositionName.getSelectedItem();
+        String positionID = txtIDPosition.getText();
+
+        if (employeeID.isEmpty() || employeeName.isEmpty() || employeeGender == null || employeeAddress.isEmpty()
+            || employeePhone.isEmpty() || employeeUsername.isEmpty() || employeePassword.isEmpty() || positionID == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin nhân viên.");
+            return;
+        }
+
+        Models.Employee employee = new Models.Employee(
+            employeeID, employeeName, employeeGender, dob, employeeAddress, employeePhone, dow, employeeUsername, employeePassword, positionID);
+        if (employeeRepo.updateEmployee(employee)) {
+            JOptionPane.showMessageDialog(this, "Cập nhật thông tin nhân viên thành công!");
+            if (dataChangedListener != null) {
+                dataChangedListener.onDataChanged();
+            }
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Cập nhật thông tin nhân viên thất bại!");
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Form_Employee_UpdateItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Form_Employee_UpdateItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Form_Employee_UpdateItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Form_Employee_UpdateItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                Form_Employee_UpdateItem dialog = new Form_Employee_UpdateItem(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cboPositionName;
+    private javax.swing.ButtonGroup genderGroup;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JRadioButton rdbGender_Female;
+    private javax.swing.JRadioButton rdbGender_Male;
+    private javax.swing.JTextField txtEmployeeAddress;
+    private javax.swing.JTextField txtEmployeeDOB;
+    private javax.swing.JTextField txtEmployeeDOW;
+    private javax.swing.JTextField txtEmployeeID;
+    private javax.swing.JTextField txtEmployeeName;
+    private javax.swing.JTextField txtEmployeePassword;
+    private javax.swing.JTextField txtEmployeePhone;
+    private javax.swing.JTextField txtEmployeeUsername;
+    private javax.swing.JTextField txtIDPosition;
+    // End of variables declaration//GEN-END:variables
+}
